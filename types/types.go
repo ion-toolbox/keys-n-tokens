@@ -16,7 +16,7 @@ type AccessTokenClaims struct {
 type DataTokenClaims struct {
 	Name  string                 `json:"svc"`
 	Level int                    `json:"lvl"`
-	Uid   int                    `json:"uid"`
+	Uid   string                 `json:"uid"`
 	Data  map[string]interface{} `json:"data"`
 	jwt.RegisteredClaims
 }
