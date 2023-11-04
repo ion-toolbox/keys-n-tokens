@@ -1,4 +1,4 @@
-module keys-n-tokens
+module github.com/ion-toolbox/keys-n-tokens
 
 go 1.21
 
