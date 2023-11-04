@@ -7,7 +7,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	"github.com/btcsuite/btcutil/base58"
-	"keys-n-tokens/types"
+	"github.com/ion-toolbox/keys-n-tokens/types"
 	"net"
 	"os"
 	"strings"

@@ -1,7 +1,7 @@
 package keyring
 
 import (
-	"keys-n-tokens/types"
+	"github.com/ion-toolbox/keys-n-tokens/types"
 )
 
 var krInstance *KeyRing = nil
