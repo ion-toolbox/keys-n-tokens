@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func validToken(md *metadata.MD) bool {
+func ValidToken(md *metadata.MD) bool {
 	authorization := (*md)["authorization"]
 	if len(authorization) < 1 {
 		return false
