@@ -16,7 +16,7 @@ func ValidToken(md *metadata.MD) bool {
 	}
 	tokenString := strings.TrimPrefix(authorization[0], "Bearer ")
 	token, err := jwt.ParseWithClaims(tokenString, &types.AccessTokenClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return keyring.SharedKeyRing().GetKeyPair("self").Public, nil
+		return keyring.SharedKeyRing().GetKeyPair("root").Public, nil
 	})
 	if err != nil {
 		return false
