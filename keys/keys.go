@@ -32,6 +32,11 @@ func NewKeyPairFromFile(file string) *types.KeyPair {
 }
 
 func NewKeyPairFromDns(ctx context.Context, fqdn string) (*types.KeyPair, error) {
+	k := os.Getenv("CA")
+	if k == "" {
+		panic("No CA public key found")
+	}
+
 	resolver := os.Getenv("RESOLVER")
 	keyData, err := (func() ([]string, error) {
 		if resolver != "" {
@@ -51,16 +56,22 @@ func NewKeyPairFromDns(ctx context.Context, fqdn string) (*types.KeyPair, error)
 	if err != nil {
 		return nil, err
 	}
-	parts := strings.Split(keyData[0], ":")
-	k := os.Getenv("CA")
-	if k == "" {
-		panic("No CA public key found")
+
+	var key = ""
+	for _, record := range keyData {
+		parts := strings.Split(record, ":")
+		if len(parts) != 2 {
+			continue
+		}
+		if ed25519.Verify(base58.Decode(k), base58.Decode(parts[0]), base58.Decode(parts[1])) {
+			key = parts[0]
+		}
 	}
-	if !ed25519.Verify(base58.Decode(k), base58.Decode(parts[0]), base58.Decode(parts[1])) {
+	if key == "" {
 		return nil, fmt.Errorf("DNS TXT signature check failed")
 	}
 	return &types.KeyPair{
 		Private: nil,
-		Public:  base58.Decode(parts[0]),
+		Public:  base58.Decode(key),
 	}, nil
 }
