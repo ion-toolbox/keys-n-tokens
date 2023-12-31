@@ -14,6 +14,24 @@ import (
 	"time"
 )
 
+func NewPublicKeyFromString(s string) *types.KeyPair {
+	return &types.KeyPair{
+		Private: nil,
+		Public:  base58.Decode(s),
+	}
+}
+
+func NewPublicKeyFromEnv(env string) (*types.KeyPair, error) {
+	val, ok := os.LookupEnv(env)
+	if !ok {
+		return nil, fmt.Errorf("can't find environment var %s", env)
+	}
+	return &types.KeyPair{
+		Private: nil,
+		Public:  base58.Decode(val),
+	}, nil
+}
+
 func NewKeyPairFromFile(file string) *types.KeyPair {
 	keyData, err := os.ReadFile(file)
 	if err != nil {
@@ -31,7 +49,7 @@ func NewKeyPairFromFile(file string) *types.KeyPair {
 	}
 }
 
-func NewKeyPairFromDns(ctx context.Context, fqdn string) (*types.KeyPair, error) {
+func NewPublicKeyFromDns(ctx context.Context, fqdn string) (*types.KeyPair, error) {
 	k := os.Getenv("CA")
 	if k == "" {
 		panic("No CA public key found")
